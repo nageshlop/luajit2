@@ -27,18 +27,18 @@ addons:
     - libgtk2.0-dev
     - valgrind
 
+before_install:
+  - if [[ $TRAVIS_CPU_ARCH == "ppc64le" ]]; then
+      export LUAJIT_COMMON_XCFLAGS="-DLUA_USE_APICHECK -DLUA_USE_ASSERT -DLUAJIT_NUMMODE=2 -O1"
+    else
+      export LUAJIT_COMMON_XCFLAGS="-DLUA_USE_APICHECK -DLUA_USE_ASSERT -DLUAJIT_NUMMODE=2 -msse4.2 -O1"
+    fi
 env:
   global:
   - JOBS=3
   - LUAJIT_PREFIX=/opt/luajit21
   - LUAJIT_SYSM_PREFIX=/opt/luajit21-sysm
-  - LUAJIT_COMMON_XCFLAGS="-DLUA_USE_APICHECK -DLUA_USE_ASSERT -DLUAJIT_NUMMODE=2 -msse4.2 -O1"
-jobs:
-  include:
-    - if: arch = ppc64le
-      env: 
-        global:
-          - LUAJIT_COMMON_XCFLAGS="-DLUA_USE_APICHECK -DLUA_USE_ASSERT -DLUAJIT_NUMMODE=2 -O1"
+  
 matrix:
   - LUAJIT_XCFLAGS="$LUAJIT_COMMON_XCFLAGS"
   - LUAJIT_XCFLAGS="-DLUAJIT_ENABLE_LUA52COMPAT $LUAJIT_COMMON_XCFLAGS" LUA52=1
