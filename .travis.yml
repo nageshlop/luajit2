@@ -28,11 +28,8 @@ addons:
     - valgrind
 
 before_install:
-  - if [[ $TRAVIS_CPU_ARCH == "ppc64le" ]]; then
-      export LUAJIT_COMMON_XCFLAGS="-DLUA_USE_APICHECK -DLUA_USE_ASSERT -DLUAJIT_NUMMODE=2 -O1"
-    else
-      export LUAJIT_COMMON_XCFLAGS="-DLUA_USE_APICHECK -DLUA_USE_ASSERT -DLUAJIT_NUMMODE=2 -msse4.2 -O1"
-    fi
+  - if [[ $TRAVIS_CPU_ARCH == "ppc64le" ]]; then export LUAJIT_COMMON_XCFLAGS="-DLUA_USE_APICHECK -DLUA_USE_ASSERT -DLUAJIT_NUMMODE=2 -O1"; else export LUAJIT_COMMON_XCFLAGS="-DLUA_USE_APICHECK -DLUA_USE_ASSERT -DLUAJIT_NUMMODE=2 -msse4.2 -O1"; fi
+
 env:
   global:
   - JOBS=3
